@@ -1,60 +1,72 @@
-API Layanan Cuci Sepatu
-Merupakan REST API untuk mengelola data layanan cuci sepatu dengan fitur CRUD lengkap dan filter status.
+# REST API Daftar Barang Cuci Sepatu
 
-🔗 Links
+## Deskripsi Umum
 
-Repository: https://github.com/cloudiesca/api-cuci-sepatu
-Live API: https://api-cuci-sepatu-liard.vercel.app/
+API ini dibuat untuk membantu pengelolaan layanan cuci sepatu secara digital. Dibangun dengan Node.js dan Express.js, API ini menyediakan sistem pencatatan yang efisien untuk tracking sepatu pelanggan mulai dari proses masuk, pencucian, hingga pengambilan.
+Dengan menggunakan database Supabase, semua data tersimpan dengan aman dan dapat diakses kapan saja. API ini cocok digunakan untuk usaha cuci sepatu skala kecil hingga menengah yang ingin mengdigitalkan sistem pencatatan mereka.
 
+---
 
-📖 Tentang Proyek
-API ini dibuat untuk memudahkan pengelolaan data sepatu yang masuk ke layanan cuci sepatu. Dibangun dengan Node.js, Express.js, dan Supabase sebagai database.
-Fitur Utama
+## Tujuan
 
-✅ Create - Tambah data sepatu baru
-✅ Read - Lihat semua data atau berdasarkan ID
-✅ Update - Ubah data sepatu (status, harga, dll)
-✅ Delete - Hapus data sepatu
-✅ Filter - Cari berdasarkan status (Dalam Proses, Selesai, Diambil)
+1. Mengimplementasikan konsep CRUD (Create, Read, Update, Delete) dalam REST API.
+2. Meningkatkan pemahaman penggunaan Express.js sebagai framework backend.
+3. Mengelola data menggunakan format JSON sebagai penyimpanan sederhana.
+4. Membangun sistem pencatatan yang relevan dengan kebutuhan bisnis nyata.
 
+---
 
-🗂️ Struktur Data
-Tabel: sepatu
+## Fitur Utama API
 
+API ini menyediakan endpoint untuk menampilkan seluruh daftar sepatu yang sedang dicuci, menambahkan data sepatu baru ke dalam daftar, memperbarui status sepatu (misalnya dari Sedang Dicuci menjadi Selesai), dan menghapus data sepatu yang sudah selesai dicuci. Tersedia juga fitur filter untuk mencari sepatu berdasarkan status tertentu menggunakan query parameter.
+
+### Endpoint yang Tersedia
+
+```
+GET    /items           - Menampilkan seluruh daftar sepatu yang sedang dicuci
+GET    /items/:id       - Menampilkan detail sepatu berdasarkan ID
+GET    /items?status=   - Menampilkan sepatu dengan filter status tertentu
+POST   /items           - Menambahkan data sepatu baru ke dalam daftar
+PUT    /items/:id       - Memperbarui status sepatu
+DELETE /items/:id       - Menghapus data sepatu yang sudah selesai dicuci
+```
+
+---
+
+## Struktur Data
+
+Setiap data sepatu memiliki struktur sebagai berikut:
+
+```javascript
 {
-  id: "uuid",                          // Auto-generated
-  nama_pelanggan: "string",            // Required
-  jenis_sepatu: "string",              // Required (Sneakers, Boots, dll)
-  warna: "string",                     // Optional
-  layanan: "string",                   // Required (Fast/Deep/Premium Cleaning)
-  status: "string",                    // Default: "Dalam Proses"
-  harga: number,                       // Required (dalam Rupiah)
-  tanggal_masuk: "timestamp",          // Auto
-  estimasi_selesai: "timestamp",       // Optional
-  created_at: "timestamp"              // Auto
+  id: "uuid",                          // ID unik yang di-generate otomatis
+  nama_pelanggan: "string",            // Nama pelanggan (required)
+  jenis_sepatu: "string",              // Jenis sepatu seperti Sneakers, Boots, dll (required)
+  warna: "string",                     // Warna sepatu (optional)
+  layanan: "string",                   // Jenis layanan: Fast Cleaning, Deep Cleaning, atau Premium Cleaning (required)
+  status: "string",                    // Status cucian: Dalam Proses, Selesai, atau Diambil (default: Dalam Proses)
+  harga: number,                       // Harga layanan dalam Rupiah (required)
+  tanggal_masuk: "timestamp",          // Tanggal sepatu masuk (auto-generated)
+  estimasi_selesai: "timestamp",       // Estimasi waktu selesai (optional)
+  created_at: "timestamp"              // Waktu record dibuat (auto-generated)
 }
+```
 
-Status yang tersedia: Dalam Proses | Selesai | Diambil
+> **Catatan:** Field yang wajib diisi saat membuat data baru adalah `nama_pelanggan`, `jenis_sepatu`, `layanan`, dan `harga`. Sedangkan field lainnya bersifat opsional atau akan di-generate secara otomatis oleh sistem.
 
-🚀 API Endpoints
-Base URL
-Production: https://api-cuci-sepatu-liard.vercel.app/
-Local: http://localhost:3000
+---
 
-Endpoint List
-GET / - Info API
-GET /items - Semua data sepatu
-GET /items?status=Selesai - Filter by status
-GET /items/:id - Data spesifik
-POST /items - Tambah data baru
-PUT /items/:id - Update data
-DELETE /items/:id - Hapus data
+## Contoh Request dan Response
 
-📝 Contoh Request & Response
-1. GET All Items
-httpGET /items
-Response:
+### Menampilkan Semua Data Sepatu
 
+**Request:**
+```http
+GET /items
+```
+
+**Response:**
+```json
 {
   "success": true,
   "count": 2,
@@ -72,13 +84,39 @@ Response:
     }
   ]
 }
+```
 
-2. GET with Filter
-   
-httpGET /items?status=Selesai
+---
 
-3. CREATE New Item
-   
+### Menampilkan Data dengan Filter Status
+
+**Request:**
+```http
+GET /items?status=Selesai
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "count": 1,
+  "data": [
+    {
+      "id": "456e7890-e89b-12d3-a456-426614174001",
+      "nama_pelanggan": "Siti Nurhaliza",
+      "status": "Selesai",
+      "harga": 35000
+    }
+  ]
+}
+```
+
+---
+
+### Menambahkan Data Sepatu Baru
+
+**Request:**
+```http
 POST /items
 Content-Type: application/json
 
@@ -89,60 +127,92 @@ Content-Type: application/json
   "layanan": "Fast Cleaning",
   "harga": 35000
 }
-Response:
+```
+
+**Response:**
+```json
 {
   "success": true,
   "message": "Data sepatu berhasil ditambahkan",
   "data": {
     "id": "new-uuid-here",
     "nama_pelanggan": "Siti Aminah",
+    "jenis_sepatu": "Boots",
+    "warna": "Hitam",
+    "layanan": "Fast Cleaning",
     "status": "Dalam Proses",
-    ...
+    "harga": 35000,
+    "tanggal_masuk": "2025-01-15T14:30:00Z"
   }
 }
+```
 
-4. UPDATE Item
+---
+
+### Memperbarui Status Sepatu
+
+**Request:**
+```http
 PUT /items/:id
 Content-Type: application/json
 
 {
   "status": "Selesai"
 }
+```
 
-5. DELETE Item
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Data berhasil diupdate",
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "status": "Selesai"
+  }
+}
+```
+
+---
+
+### Menghapus Data Sepatu
+
+**Request:**
+```http
 DELETE /items/:id
-Response:
+```
+
+**Response:**
+```json
 {
   "success": true,
   "message": "Data berhasil dihapus"
 }
+```
 
-🛠️ Instalasi & Menjalankan Lokal
-Setup
+---
 
-1. Clone repository
+## Langkah Instalasi dan Cara Menjalankan API
 
-git clone https://github.com/cloudiesca/api-cuci-sepatu.git
-cd api-cuci-sepatu
+### Setup Database (Langkah Pertama)
 
-2. Install dependencies
+**1. Buat akun dan project di Supabase:**
+- Buka [supabase.com](https://supabase.com) dan Sign Up
+- Klik **"New Project"**
+- Isi nama project, database password, dan pilih region **Southeast Asia (Singapore)**
+- Tunggu hingga project selesai dibuat (2-3 menit)
 
-npm install
+**2. Dapatkan API Credentials:**
+- Di Supabase Dashboard, klik **Settings** → **API**
+- Copy dan simpan:
+  - **Project URL** (contoh: `https://xxxxx.supabase.co`)
+  - **anon public key** (key yang panjang, mulai dengan `eyJh...`)
 
-3. Setup environment variables
+**3. Buat tabel database:**
+- Di sidebar, klik **SQL Editor** → **New Query**
+- Copy-paste query berikut dan klik **Run**:
 
-cp .env.example .env
-
-Edit .env:
-
-SUPABASE_URL=https://sohxhhdzzklarzyrpnnc.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvaHhoaGR6emtsYXJ6eXJwbm5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEwOTMwMTAsImV4cCI6MjA3NjY2OTAxMH0.atpchJABSklBxEalndStqk-HVfw3r27qw6LncrpXC4s
-PORT=3000
-
-4. Setup database di Supabase
-
-Jalankan SQL ini di Supabase SQL Editor:
-
+```sql
 CREATE TABLE sepatu (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   nama_pelanggan VARCHAR(255) NOT NULL,
@@ -159,36 +229,91 @@ CREATE TABLE sepatu (
 ALTER TABLE sepatu ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Allow all" ON sepatu FOR ALL USING (true);
 
-5. Run server
+-- Insert sample data
+INSERT INTO sepatu (nama_pelanggan, jenis_sepatu, warna, layanan, status, harga) VALUES
+('Ahmad Rizki', 'Sneakers', 'Putih', 'Deep Cleaning', 'Dalam Proses', 50000),
+('Siti Nurhaliza', 'Boots', 'Hitam', 'Fast Cleaning', 'Selesai', 35000);
+```
 
+**4. Verifikasi database:**
+- Klik **Table Editor** di sidebar
+- Pastikan tabel `sepatu` sudah ada dengan 2 data sample
+
+---
+
+### Instalasi Project Lokal (Langkah Kedua)
+
+**1. Clone repository ini ke komputer Anda:**
+```bash
+git clone https://github.com/cloudiesca/api-cuci-sepatu.git
+cd api-cuci-sepatu
+```
+
+**2. Install semua dependencies yang diperlukan:**
+```bash
+npm install
+```
+
+**3. Buat file `.env` dengan menyalin dari `.env.example`:**
+```bash
+cp .env.example .env
+```
+
+**4. Buka file `.env` dan isi dengan credentials Supabase yang sudah didapatkan:**
+```env
+SUPABASE_URL=https://xxxxx.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+PORT=3000
+```
+
+---
+
+### Menjalankan Server
+
+Setelah semua setup selesai, jalankan server dengan perintah:
+
+```bash
 npm run dev
+```
 
-Server berjalan di http://localhost:3000
+Server akan berjalan di `http://localhost:3000`. Anda bisa membuka browser dan mengakses URL tersebut untuk melihat info API, atau gunakan tools seperti **Postman** untuk testing endpoint.
 
-🌐 Deploy ke Vercel
+---
 
-1. Push code ke GitHub
-2. Import project di Vercel
-3. Tambahkan environment variables:
-SUPABASE_URL
-SUPABASE_KEY
-4. Deploy
+## Link Deploy (Vercel)
 
-🧪 Testing
-Manual Test
-# Get all items
+API ini sudah di-deploy dan dapat diakses secara publik melalui:
+
+```
+Production URL: https://api-cuci-sepatu-liard.vercel.app/
+Repository: https://github.com/cloudiesca/api-cuci-sepatu
+```
+
+Anda dapat langsung melakukan testing ke URL production tanpa perlu menjalankan server lokal.
+
+---
+
+### Testing API Production
+
+Untuk melakukan testing, bisa menggunakan **curl** di terminal:
+
+```bash
+# Melihat semua data
 curl https://api-cuci-sepatu.vercel.app/items
 
-# Filter by status
+# Filter berdasarkan status
 curl https://api-cuci-sepatu.vercel.app/items?status=Selesai
 
-# Create item
- POST https://api-cuci-sepatu.vercel.app/items \
-"Content-Type: application/json" \
-
-'{
+# Menambah data baru
+curl -X POST https://api-cuci-sepatu.vercel.app/items \
+  -H "Content-Type: application/json" \
+  -d '{
     "nama_pelanggan": "Test User",
     "jenis_sepatu": "Sneakers",
     "layanan": "Fast Cleaning",
     "harga": 35000
   }'
+```
+
+---
+

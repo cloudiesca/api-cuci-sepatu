@@ -62,27 +62,52 @@ Setiap data sepatu memiliki struktur sebagai berikut:
 
 **Request:**
 ```http
-GET /items
+GET https://api-cuci-sepatu-liard.vercel.app/items
 ```
 
 **Response:**
 ```json
 {
-  "success": true,
-  "count": 2,
-  "data": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "nama_pelanggan": "Ahmad Rizki",
-      "jenis_sepatu": "Sneakers",
-      "warna": "Putih",
-      "layanan": "Deep Cleaning",
-      "status": "Dalam Proses",
-      "harga": 50000,
-      "tanggal_masuk": "2025-01-15T10:00:00Z",
-      "estimasi_selesai": "2025-01-17T10:00:00Z"
-    }
-  ]
+    "success": true,
+    "count": 3,
+    "data": [
+        {
+            "id": "02f870b9-49ed-4102-9c02-4fec5cca1afc",
+            "nama_pelanggan": "Ahmad Rizki",
+            "jenis_sepatu": "Sneakers",
+            "warna": "Putih",
+            "layanan": "Deep Cleaning",
+            "status": "Dalam Proses",
+            "harga": 50000,
+            "tanggal_masuk": "2025-10-22T01:41:45.852673",
+            "estimasi_selesai": null,
+            "created_at": "2025-10-22T01:41:45.852673"
+        },
+        {
+            "id": "8148c5cf-7807-4bde-b915-fe188e7815cc",
+            "nama_pelanggan": "Siti Nurhaliza",
+            "jenis_sepatu": "Boots",
+            "warna": "Hitam",
+            "layanan": "Fast Cleaning",
+            "status": "Selesai",
+            "harga": 35000,
+            "tanggal_masuk": "2025-10-22T01:41:45.852673",
+            "estimasi_selesai": null,
+            "created_at": "2025-10-22T01:41:45.852673"
+        },
+        {
+            "id": "cbca4dc6-4ae5-46e3-990f-4bc4f7872135",
+            "nama_pelanggan": "Budi Santoso",
+            "jenis_sepatu": "Casual",
+            "warna": "Biru",
+            "layanan": "Deep Cleaning",
+            "status": "Dalam Proses",
+            "harga": 45000,
+            "tanggal_masuk": "2025-10-22T01:41:45.852673",
+            "estimasi_selesai": null,
+            "created_at": "2025-10-22T01:41:45.852673"
+        }
+    ]
 }
 ```
 
@@ -92,22 +117,28 @@ GET /items
 
 **Request:**
 ```http
-GET /items?status=Selesai
+GET https://api-cuci-sepatu-liard.vercel.app/items?status=Selesai
 ```
 
 **Response:**
 ```json
 {
-  "success": true,
-  "count": 1,
-  "data": [
-    {
-      "id": "456e7890-e89b-12d3-a456-426614174001",
-      "nama_pelanggan": "Siti Nurhaliza",
-      "status": "Selesai",
-      "harga": 35000
-    }
-  ]
+    "success": true,
+    "count": 1,
+    "data": [
+        {
+            "id": "8148c5cf-7807-4bde-b915-fe188e7815cc",
+            "nama_pelanggan": "Siti Nurhaliza",
+            "jenis_sepatu": "Boots",
+            "warna": "Hitam",
+            "layanan": "Fast Cleaning",
+            "status": "Selesai",
+            "harga": 35000,
+            "tanggal_masuk": "2025-10-22T01:41:45.852673",
+            "estimasi_selesai": null,
+            "created_at": "2025-10-22T01:41:45.852673"
+        }
+    ]
 }
 ```
 
@@ -117,7 +148,7 @@ GET /items?status=Selesai
 
 **Request:**
 ```http
-POST /items
+POST https://api-cuci-sepatu-liard.vercel.app/items
 Content-Type: application/json
 
 {
@@ -132,18 +163,20 @@ Content-Type: application/json
 **Response:**
 ```json
 {
-  "success": true,
-  "message": "Data sepatu berhasil ditambahkan",
-  "data": {
-    "id": "new-uuid-here",
-    "nama_pelanggan": "Siti Aminah",
-    "jenis_sepatu": "Boots",
-    "warna": "Hitam",
-    "layanan": "Fast Cleaning",
-    "status": "Dalam Proses",
-    "harga": 35000,
-    "tanggal_masuk": "2025-01-15T14:30:00Z"
-  }
+    "success": true,
+    "message": "Data sepatu berhasil ditambahkan",
+    "data": {
+        "id": "57af544a-a5ea-4c39-afdd-e6a5a7e48767",
+        "nama_pelanggan": "Siti Aminah",
+        "jenis_sepatu": "Boots",
+        "warna": "Hitam",
+        "layanan": "Fast Cleaning",
+        "status": "Dalam Proses",
+        "harga": 35000,
+        "tanggal_masuk": "2025-10-23T03:12:35.657",
+        "estimasi_selesai": null,
+        "created_at": "2025-10-23T03:12:36.54"
+    }
 }
 ```
 
@@ -153,7 +186,7 @@ Content-Type: application/json
 
 **Request:**
 ```http
-PUT /items/:id
+PUT https://api-cuci-sepatu-liard.vercel.app/items/02f870b9-49ed-4102-9c02-4fec5cca1afc (tambahkan id pelanggan yang ingin diupdate)
 Content-Type: application/json
 
 {
@@ -164,12 +197,20 @@ Content-Type: application/json
 **Response:**
 ```json
 {
-  "success": true,
-  "message": "Data berhasil diupdate",
-  "data": {
-    "id": "123e4567-e89b-12d3-a456-426614174000",
-    "status": "Selesai"
-  }
+    "success": true,
+    "message": "Data berhasil diupdate",
+    "data": {
+        "id": "02f870b9-49ed-4102-9c02-4fec5cca1afc",
+        "nama_pelanggan": "Ahmad Rizki",
+        "jenis_sepatu": "Sneakers",
+        "warna": "Putih",
+        "layanan": "Deep Cleaning",
+        "status": "Selesai",
+        "harga": 50000,
+        "tanggal_masuk": "2025-10-22T01:41:45.852673",
+        "estimasi_selesai": null,
+        "created_at": "2025-10-22T01:41:45.852673"
+    }
 }
 ```
 
@@ -179,14 +220,26 @@ Content-Type: application/json
 
 **Request:**
 ```http
-DELETE /items/:id
+DELETE https://api-cuci-sepatu-liard.vercel.app/items/02f870b9-49ed-4102-9c02-4fec5cca1afc (tambahkan id pelanggan yang ingin dihapus)
 ```
 
 **Response:**
 ```json
 {
-  "success": true,
-  "message": "Data berhasil dihapus"
+    "success": true,
+    "message": "Data berhasil dihapus",
+    "data": {
+        "id": "02f870b9-49ed-4102-9c02-4fec5cca1afc",
+        "nama_pelanggan": "Ahmad Rizki",
+        "jenis_sepatu": "Sneakers",
+        "warna": "Putih",
+        "layanan": "Deep Cleaning",
+        "status": "Selesai",
+        "harga": 50000,
+        "tanggal_masuk": "2025-10-22T01:41:45.852673",
+        "estimasi_selesai": null,
+        "created_at": "2025-10-22T01:41:45.852673"
+    }
 }
 ```
 
@@ -295,25 +348,17 @@ Anda dapat langsung melakukan testing ke URL production tanpa perlu menjalankan 
 
 ### Testing API Production
 
-Untuk melakukan testing, bisa menggunakan **curl** di terminal:
+Untuk melakukan testing, dapat menggunakan beberapa cara:
+1. Testing dengan Browser (untuk GET endpoint):
 
-```bash
-# Melihat semua data
-curl https://api-cuci-sepatu.vercel.app/items
+Buka browser dan akses: https://api-cuci-sepatu-liard.vercel.app/
+Untuk filter: https://api-cuci-sepatu-liard.vercel.app/items?status=Selesai
 
-# Filter berdasarkan status
-curl https://api-cuci-sepatu.vercel.app/items?status=Selesai
+2. Testing dengan Postman (Recommended):
 
-# Menambah data baru
-curl -X POST https://api-cuci-sepatu.vercel.app/items \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nama_pelanggan": "Test User",
-    "jenis_sepatu": "Sneakers",
-    "layanan": "Fast Cleaning",
-    "harga": 35000
-  }'
-```
+Download dan install Postman
+Buat request dengan endpoint seperti pada browser di atas
 
 ---
+
 
